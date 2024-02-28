@@ -611,6 +611,9 @@ export const cryptoData = {
   },
 }
 
+
+
+
 export const cryptoAssets = [
   {
     id: 'bitcoin',
