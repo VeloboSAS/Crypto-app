@@ -20,8 +20,9 @@ export function CryptoContextProvider({ children }) {
       return {
         grow: asset.price < coin.price, //boolean
         growPercent: percentDifference(asset.price, coin.price),
-        totalAmmount: asset.amount * coin.price,
+        totalAmount: asset.amount * coin.price,
         totalProfit: asset.amount * coin.price - asset.amount * asset.price,
+        name: coin.name,
         ...asset,
       };
     });
@@ -29,6 +30,7 @@ export function CryptoContextProvider({ children }) {
 
   useEffect(() => {
     async function preload() {
+      setLoading(true)
       const { result } = await fakeFetchCrypto();
       const assets = await fetchAssets();
 
