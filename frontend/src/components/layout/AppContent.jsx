@@ -20,7 +20,7 @@ const cryptoPriceMap = crypto.reduce((acc, c) => {
     }, {})
     return (
         <Layout.Content style={contentStyle}>
-            <Typography.Title level={3} style={{textAlign: 'left', color: '#fff'}}>
+            <Typography.Title level={3} style={{textAlign: 'center', color: '#fff', marginBottom: "30px"}}>
                 Portfolio: {''}
                 {assets.map((asset) => asset.amount * cryptoPriceMap[asset.id]
                 ).reduce((acc, v) => (acc += v), 0).toFixed(2)}$

@@ -44,7 +44,7 @@ export default function AppHeader() {
         open={select}
         onSelect={handleSelect}
         onClick={() => setSelect((prev) => !prev)}
-        value="press / to open"
+        value="Select coin"
         options={crypto.map((coin) => ({
           label: coin.name,
           value: coin.id,
