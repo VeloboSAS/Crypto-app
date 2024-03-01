@@ -14,31 +14,37 @@ export function CryptoContextProvider({ children }) {
   const [crypto, setCrypto] = useState([]);
   const [assets, setAssets] = useState([]);
 
+  function mapAssets(assets, result) {
+    return assets.map((asset) => {
+      const coin = result.find((c) => c.id === asset.id);
+      return {
+        grow: asset.price < coin.price, //boolean
+        growPercent: percentDifference(asset.price, coin.price),
+        totalAmmount: asset.amount * coin.price,
+        totalProfit: asset.amount * coin.price - asset.amount * asset.price,
+        ...asset,
+      };
+    });
+  }
+
   useEffect(() => {
     async function preload() {
       const { result } = await fakeFetchCrypto();
       const assets = await fetchAssets();
 
-      setAssets(
-        assets.map((asset) => {
-          const coin = result.find((c) => c.id === asset.id);
-          return {
-            grow: asset.price < coin.price, //boolean
-            growPercent: percentDifference(asset.price, coin.price),
-            totalAmmount: asset.amount * coin.price,
-            totalProfit: asset.amount * coin.price - asset.amount * asset.price,
-            ...asset,
-          };
-        })
-      );
+      setAssets(mapAssets(assets, result));
       setCrypto(result);
       setLoading(false);
     }
     preload();
   }, []);
 
+  function addAsset(newAsset) {
+    setAssets((prev) => mapAssets([...prev, newAsset], crypto));
+  }
+
   return (
-    <CryptoContext.Provider value={{ loading, assets, crypto }}>
+    <CryptoContext.Provider value={{ loading, assets, crypto, addAsset }}>
       {children}
     </CryptoContext.Provider>
   );
@@ -47,5 +53,5 @@ export function CryptoContextProvider({ children }) {
 export default CryptoContext;
 
 export function useCrypto() {
-  return useContext(CryptoContext)
+  return useContext(CryptoContext);
 }
